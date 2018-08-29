@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @项目名称：wyait-manage
+ * @项目名称：springboot-redis
  * @包名：com.wyait.redis.controller
  * @类描述：
- * @创建人：wyait
- * @创建时间：2017-12-07 11:25
- * @version：V1.0
+ * @创建人：Outcaster
+ * @创建时间：2018-08-29 12:14
+ * @version：V1.0.0
  */
 @Controller
 @RequestMapping("redis")

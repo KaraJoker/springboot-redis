@@ -3,12 +3,12 @@ package com.wyait.redis.pojo;
 import java.io.Serializable;
 
 /**
- * @项目名称：wyait-manage
+ * @项目名称：springboot-redis
  * @包名：com.wyait.redis.pojo
- * @类描述：
- * @创建人：wyait
- * @创建时间：2017-12-06 17:54
- * @version：V1.0
+ * @类描述：This is a entity
+ * @创建人：Outcaster
+ * @创建时间：2018-08-29 12:12
+ * @version：V1.0.0
  */
 public class Cat implements Serializable {
 

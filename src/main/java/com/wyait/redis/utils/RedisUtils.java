@@ -1,12 +1,9 @@
 package com.wyait.redis.utils;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,14 +11,13 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
- * @项目名称：wyait-redis
+ * @项目名称：springboot-redis
  * @类名称：RedisService
- * @类描述：redis配置类
- * @创建人：wyait
- * @创建时间：2017年12月3日14:31:45
+ * @类描述：redis工具类
+ * @创建人：Outcaster
+ * @创建时间：2018年08月29日11:46:23
  * @version：1.0.0
  */
 @Component
@@ -38,8 +34,7 @@ public class RedisUtils {
 	public boolean set(final String key, Object value) {
 		boolean result = false;
 		try {
-			ValueOperations<String, Object> operations = redisTemplate
-					.opsForValue();
+			ValueOperations<String, Object> operations = redisTemplate.opsForValue();
 			operations.set(key, value);
 			result = true;
 		} catch (Exception e) {
@@ -58,8 +53,7 @@ public class RedisUtils {
 	public boolean set(final String key, Object value, Long expireTime) {
 		boolean result = false;
 		try {
-			ValueOperations<String, Object> operations = redisTemplate
-					.opsForValue();
+			ValueOperations<String, Object> operations = redisTemplate.opsForValue();
 			operations.set(key, value);
 			redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
 			result = true;
@@ -115,8 +109,7 @@ public class RedisUtils {
 	 */
 	public Object get(final String key) {
 		Object result = null;
-		ValueOperations<String, Object> operations = redisTemplate
-				.opsForValue();
+		ValueOperations<String, Object> operations = redisTemplate.opsForValue();
 		result = operations.get(key);
 		return result;
 	}
@@ -191,7 +184,7 @@ public class RedisUtils {
 	 * 添加ZSet有序集合到redis中
 	 * @param key 键
 	 * @param value 值
-	 * @param scoure 长度？
+	 * @param scoure 长度
 	 */
 	public void zAdd(String key, Object value, double scoure) {
 		ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();

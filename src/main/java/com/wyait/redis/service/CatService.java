@@ -4,12 +4,12 @@ import com.wyait.redis.pojo.Cat;
 import org.springframework.stereotype.Service;
 
 /**
- * @项目名称：wyait-manage
+ * @项目名称：springboot-redis
  * @包名：com.wyait.redis.service
  * @类描述：
- * @创建人：wyait
- * @创建时间：2017-12-07 13:59
- * @version：V1.0
+ * @创建人：Outcaster
+ * @创建时间：2018-08-29 12:13
+ * @version：V1.0.0
  */
 @Service public class CatService {
 	public Cat getCat(int catId) {

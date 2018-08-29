@@ -18,17 +18,14 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
 
 /**
- * @项目名称：wyait-redis
+ * @项目名称：springboot-redis
  * @类名称：RedisConfig
  * @类描述：redis配置类
- * @创建人：wyait
- * @创建时间：2017年12月3日14:31:45
+ * @创建人：Outcaster
+ * @创建时间：2018年08月29日12:11:30
  * @version：1.0.0
  */
 @Configuration 
@@ -40,16 +37,18 @@ public class RedisConfig extends CachingConfigurerSupport {
 	/**
 	 * 注入 RedisConnectionFactory
 	 */
-	@Autowired RedisConnectionFactory redisConnectionFactory;
+	@Autowired 
+	RedisConnectionFactory redisConnectionFactory;
 
 	/**
 	 * 指定key的生成策略
 	 * @return KeyGenerator
 	 */
-	@Bean public KeyGenerator keyGenerator() {
+	@Bean 
+	public KeyGenerator keyGenerator() {
 		return new KeyGenerator() {
-			@Override public Object generate(Object target, Method method,
-					Object... params) {
+			@Override 
+			public Object generate(Object target, Method method,Object... params) {
 				StringBuilder sb = new StringBuilder();
 				String[] value = new String[1];
 				// sb.append(target.getClass().getName());
@@ -81,7 +80,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 *
 	 * @return CacheManager
 	 */
-	@Bean public CacheManager cacheManager(RedisTemplate redisTemplate) {
+	@Bean 
+	public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
 		RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
 		// 设置缓存过期时间（单位:秒），60秒
 		rcm.setDefaultExpiration(600);
@@ -93,7 +93,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 *
 	 * @return RedisTemplate
 	 */
-	@Bean public RedisTemplate<String, Object> functionDomainRedisTemplate() {
+	@Bean 
+	public RedisTemplate<String, Object> functionDomainRedisTemplate() {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory);
 		initDomainRedisTemplate(redisTemplate);
@@ -107,15 +108,13 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 *
 	 * @param redisTemplate
 	 */
-	private void initDomainRedisTemplate(
-			RedisTemplate<String, Object> redisTemplate) {
+	private void initDomainRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
 		//key序列化方式;（不然会出现乱码;）,但是如果方法上有Long等非String类型的话，会报类型转换错误；
 		//所以在没有自己定义key生成策略的时候，以下这个代码建议不要这么写，可以不配置或者自己实现ObjectRedisSerializer
 		//或者JdkSerializationRedisSerializer序列化方式;
 
 		// 使用Jackson2JsonRedisSerialize 替换默认序列化
-		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(
-				Object.class);
+		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
@@ -137,7 +136,9 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * 保证redis服务器出现连接等问题的时候不影响程序的正常运行，使得能够出问题时不用缓存
 	 * @return
 	 */
-	@Bean @Override public CacheErrorHandler errorHandler() {
+	@Bean 
+	@Override 
+	public CacheErrorHandler errorHandler() {
 		CacheErrorHandler cacheErrorHandler = new CacheErrorHandler() {
 			@Override public void handleCacheGetError(RuntimeException e,
 					Cache cache, Object key) {
@@ -168,8 +169,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @param redisTemplate
 	 * @return
 	 */
-	@Bean public ValueOperations<String, Object> valueOperations(
-			RedisTemplate<String, Object> redisTemplate) {
+	@Bean 
+	public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForValue();
 	}
 
@@ -179,8 +180,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @param redisTemplate
 	 * @return
 	 */
-	@Bean public HashOperations<String, String, Object> hashOperations(
-			RedisTemplate<String, Object> redisTemplate) {
+	@Bean 
+	public HashOperations<String, String, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForHash();
 	}
 
@@ -190,8 +191,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @param redisTemplate
 	 * @return
 	 */
-	@Bean public ListOperations<String, Object> listOperations(
-			RedisTemplate<String, Object> redisTemplate) {
+	@Bean 
+	public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForList();
 	}
 
@@ -201,8 +202,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @param redisTemplate
 	 * @return
 	 */
-	@Bean public SetOperations<String, Object> setOperations(
-			RedisTemplate<String, Object> redisTemplate) {
+	@Bean 
+	public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForSet();
 	}
 
@@ -212,9 +213,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @param redisTemplate
 	 * @return
 	 */
-	@Bean public ZSetOperations<String, Object> zSetOperations(
-			RedisTemplate<String, Object> redisTemplate) {
+	@Bean 
+	public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForZSet();
 	}
-
 }
